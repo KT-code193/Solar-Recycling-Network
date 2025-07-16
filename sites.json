@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Aerisoul Metal & Energy",
+        "location": "Slovakia",
+        "address": "Bratislava, Slovakia",
+        "lat": 48.1486,
+        "lng": 17.1077,
+        "contact": "tibor.andorko@aerisoul.com"
+    },
+    {
+        "name": "ROSI Solar",
+        "location": "France",
+        "address": "Grenoble, France",
+        "lat": 45.1885,
+        "lng": 5.7245,
+        "contact": "info@rosi-solar.com"
+    },
+    {
+        "name": "Reiling GmbH",
+        "location": "Germany",
+        "address": "Marienfeld, Germany",
+        "lat": 51.8833,
+        "lng": 8.0333,
+        "contact": "info@reiling.de"
+    },
+    {
+        "name": "We Recycle Solar",
+        "location": "USA",
+        "address": "Phoenix, AZ, USA",
+        "lat": 33.4484,
+        "lng": -112.0740,
+        "contact": "info@WeRecycleSolar.com"
+    },
+    {
+        "name": "SolarLoop",
+        "location": "Australia",
+        "address": "Melbourne, Australia",
+        "lat": -37.8136,
+        "lng": 144.9631,
+        "contact": "generalenquiries@ecoactiv.com.au"
+    }
+]

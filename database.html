@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database of Recycling Sites</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Database of Solar Recycling Sites</h1>
+        <nav><a href="index.html">Home</a></nav>
+    </header>
+    <main>
+        <input type="text" id="searchBar" placeholder="Search by name or location..." onkeyup="searchSites()">
+        <ul id="siteList"></ul>
+    </main>
+    <script>
+        let sites = [];
+
+        fetch('sites.json')
+            .then(response => response.json())
+            .then(data => {
+                sites = data;
+                displaySites(sites);
+            });
+
+        function displaySites(sitesToDisplay) {
+            const siteList = document.getElementById('siteList');
+            siteList.innerHTML = '';
+            sitesToDisplay.forEach(site => {
+                const li = document.createElement('li');
+                li.innerHTML = `<b>${site.name}</b> - ${site.location}<br>${site.address}<br>Contact: ${site.contact}`;
+                siteList.appendChild(li);
+            });
+        }
+
+        function searchSites() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filteredSites = sites.filter(site =>
+                site.name.toLowerCase().includes(query) ||
+                site.location.toLowerCase().includes(query)
+            );
+            displaySites(filteredSites);
+        }
+    </script>
+</body>
+</html>

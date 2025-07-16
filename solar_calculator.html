@@ -1,0 +1,136 @@
+<!docType html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solar Recycling Profitability Calculator</title>
+    <nav><a href="index.html">Home</a></nav>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #2980b9;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #3498db;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #f9f9f9;
+        }
+        .good {
+            color: green;
+            font-weight: bold;
+        }
+        .bad {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Solar Recycling Profitability Calculator</h1>
+    <form id="calcForm">
+        <label>Number of Panels
+            <input type="number" id="numPanels" placeholder="e.g., 100" required>
+        </label>
+        <label>Panel Weight (kg)
+            <input type="number" id="panelWeight" placeholder="e.g., 20" required>
+        </label>
+        <label>Recycling Cost per kg ($)
+            <input type="number" id="recyclingCost" placeholder="e.g., 0.50" required>
+        </label>
+        <label>Landfill Cost per kg ($)
+            <input type="number" id="landfillCost" placeholder="e.g., 0.10" required>
+        </label>
+        <label>Transport Cost per km per panel ($)
+            <input type="number" id="transportCost" placeholder="e.g., 0.05" required>
+        </label>
+        <label>Distance to site (km)
+            <input type="number" id="distance" placeholder="e.g., 50" required>
+        </label>
+        <label>Subsidies or Fines per panel ($)
+            <input type="number" id="subsidyFine" placeholder="e.g., 2 (use negative for fines)" required>
+        </label>
+        <label>Material Recovery Revenue per kg ($)
+            <input type="number" id="recoveryRevenue" placeholder="e.g., 1.20" required>
+        </label>
+        <button type="button" onclick="calculateProfit()">Calculate</button>
+    </form>
+
+    <div id="results"></div>
+
+    <script>
+        function calculateProfit() {
+            const N = parseFloat(document.getElementById('numPanels').value);
+            const W = parseFloat(document.getElementById('panelWeight').value);
+            const C3 = parseFloat(document.getElementById('recyclingCost').value);
+            const D1 = parseFloat(document.getElementById('landfillCost').value);
+            const C2 = parseFloat(document.getElementById('transportCost').value);
+            const distance = parseFloat(document.getElementById('distance').value);
+            const S = parseFloat(document.getElementById('subsidyFine').value);
+            const R1 = parseFloat(document.getElementById('recoveryRevenue').value);
+
+            // Total transport cost
+            const transportTotal = N * distance * C2;
+
+            // Total costs
+            const recyclingCostTotal = N * W * C3 + transportTotal;
+            const landfillCostTotal = N * W * D1 + transportTotal;
+
+            // Total revenue from recycling
+            const recyclingRevenue = N * W * R1;
+
+            // Net profits
+            const profitRecycle = recyclingRevenue + N * S - recyclingCostTotal;
+            const profitDisposal = - (landfillCostTotal + N * S);
+
+            // Profit difference
+            const deltaP = profitRecycle - profitDisposal;
+
+            // Output results
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <h2>Results</h2>
+                <p><strong>Total Recycling Cost:</strong> $${recyclingCostTotal.toFixed(2)}</p>
+                <p><strong>Total Landfill Cost:</strong> $${landfillCostTotal.toFixed(2)}</p>
+                <p><strong>Recycling Profit:</strong> $${profitRecycle.toFixed(2)}</p>
+                <p><strong>Disposal Profit:</strong> $${profitDisposal.toFixed(2)}</p>
+                <p><strong>Profitability Difference (ΔP):</strong> $${deltaP.toFixed(2)}</p>
+                <p class="${deltaP >= 0 ? 'good' : 'bad'}">
+                    ${deltaP >= 0 ? '✅ Recycling is more profitable' : '❌ Disposal is more profitable'}
+                </p>
+            `;
+        }
+    </script>
+</body>
+</html>

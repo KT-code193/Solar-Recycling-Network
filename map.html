@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Map</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <header>
+        <h1>Interactive Map of Solar Recycling Sites</h1>
+        <nav><a href="index.html">Home</a></nav>
+    </header>
+    <main>
+        <div id="map" style="height: 500px;"></div>
+    </main>
+    <script>
+        const map = L.map('map').setView([20, 0], 2); // World view
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch('sites.json')
+            .then(response => response.json())
+            .then(sites => {
+                sites.forEach(site => {
+                    L.marker([site.lat, site.lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${site.name}</b><br>${site.address}<br>Contact: ${site.contact}`);
+                });
+            });
+    </script>
+</body>
+</html>
