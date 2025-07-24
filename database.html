@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Database of Recycling Sites</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Database of Solar Recycling Sites</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
     <header>
@@ -11,7 +11,7 @@
         <nav><a href="index.html">Home</a></nav>
     </header>
     <main>
-        <input type="text" id="searchBar" placeholder="Search by name or location..." onkeyup="searchSites()">
+        <input type="text" id="searchBar" placeholder="Search by name, location, or facility type..." onkeyup="searchSites()" />
         <ul id="siteList"></ul>
     </main>
     <script>
@@ -22,14 +22,26 @@
             .then(data => {
                 sites = data;
                 displaySites(sites);
-            });
+            })
+            .catch(err => console.error("Error loading site data:", err));
 
         function displaySites(sitesToDisplay) {
             const siteList = document.getElementById('siteList');
             siteList.innerHTML = '';
+
+            if (sitesToDisplay.length === 0) {
+                siteList.innerHTML = '<li>No results found.</li>';
+                return;
+            }
+
             sitesToDisplay.forEach(site => {
                 const li = document.createElement('li');
-                li.innerHTML = `<b>${site.name}</b> - ${site.location}<br>${site.address}<br>Contact: ${site.contact}`;
+                li.innerHTML = `
+                    <b>${site.location}</b> — ${site.facilityType}<br>
+                    ${site.address}<br>
+                    Website: <a href="${site.website}" target="_blank" rel="noopener">${site.website}</a><br>
+                    Last checked: <em>${site.dateLastChecked}</em>
+                `;
                 siteList.appendChild(li);
             });
         }
@@ -37,8 +49,9 @@
         function searchSites() {
             const query = document.getElementById('searchBar').value.toLowerCase();
             const filteredSites = sites.filter(site =>
-                site.name.toLowerCase().includes(query) ||
-                site.location.toLowerCase().includes(query)
+                site.location.toLowerCase().includes(query) ||
+                site.facilityType.toLowerCase().includes(query) ||
+                site.address.toLowerCase().includes(query)
             );
             displaySites(filteredSites);
         }
