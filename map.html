@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Interactive Map</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <title>Interactive Map of Solar Recycling Sites</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
@@ -16,24 +16,32 @@
         <div id="map" style="height: 500px;"></div>
     </main>
     <script>
-        // Initialize map centered on the U.S. with appropriate zoom level
-        const map = L.map('map').setView([37.8, -96], 4);
+        const map = L.map('map');
+        const bounds = [];
 
-        // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
 
-        // Fetch site data and add markers
         fetch('sites.json')
             .then(response => response.json())
             .then(sites => {
                 sites.forEach(site => {
-                    L.marker([site.lat, site.lng])
-                        .addTo(map)
-                        .bindPopup(`<b>${site.name}</b><br>${site.address}<br>Contact: ${site.contact}`);
+                    const marker = L.marker([site.lat, site.lng]).addTo(map);
+                    marker.bindPopup(`
+                        <b>${site.location}</b><br>
+                        ${site.address}<br>
+                        <strong>Facility Type:</strong> ${site.facilityType}<br>
+                        <a href="${site.website}" target="_blank" rel="noopener">Website</a><br>
+                        <em>Last checked: ${site.dateLastChecked}</em>
+                    `);
+                    bounds.push([site.lat, site.lng]);
                 });
-            });
+                if (bounds.length > 0) {
+                    map.fitBounds(bounds, { padding: [50, 50] });
+                }
+            })
+            .catch(err => console.error("Error loading site data:", err));
     </script>
 </body>
 </html>
