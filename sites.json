@@ -173,8 +173,8 @@
   {
     "location": "PowerHouse Recycling – Salisbury NC",
     "address": "1325 Litton Dr, Salisbury, NC 28147",
-    "lat": 35.6750,
-    "lng": -80.4750,
+    "lat": 35.675,
+    "lng": -80.475,
     "facilityType": "Electronics & PV recycling campus",
     "website": "https://powerhouserecycling.com",
     "dateLastChecked": "Jul 24, 2025"
@@ -186,6 +186,24 @@
     "lng": -90.1189,
     "facilityType": "R2 & metals/e-scrap recycling (accepts PV)",
     "website": "https://www.intercotradingco.com",
+    "dateLastChecked": "Jul 24, 2025"
+  },
+  {
+    "location": "Comstock – Silver Springs, NV",
+    "address": "1200 American Flat Rd, Silver Springs, NV 89429",
+    "lat": 39.4153,
+    "lng": -119.2332,
+    "facilityType": "Solar panel recycling & mineral recovery center",
+    "website": "https://www.comstock.inc",
+    "dateLastChecked": "Jul 24, 2025"
+  },
+  {
+    "location": "Comstock Innovation Campus – Storey County, NV",
+    "address": "1621 Comstock Dr, Virginia City, NV 89440",
+    "lat": 39.3078,
+    "lng": -119.649,
+    "facilityType": "Recycling R&D and lithium extraction site",
+    "website": "https://www.comstock.inc",
     "dateLastChecked": "Jul 24, 2025"
   }
 ]
