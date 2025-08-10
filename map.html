@@ -1,47 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>Interactive Map of Solar Recycling Sites</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-</head>
-<body>
-    <header>
-        <h1>Interactive Map of Solar Recycling Sites</h1>
-        <nav><a href="index.html">Home</a></nav>
-    </header>
-    <main>
-        <div id="map" style="height: 500px;"></div>
-    </main>
-    <script>
-        const map = L.map('map');
-        const bounds = [];
+<script>
+    const map = L.map('map');
+    const bounds = [];
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-        fetch('sites.json')
-            .then(response => response.json())
-            .then(sites => {
-                sites.forEach(site => {
-                    const marker = L.marker([site.lat, site.lng]).addTo(map);
-                    marker.bindPopup(`
-                        <b>${site.location}</b><br>
-                        ${site.address}<br>
-                        <strong>Facility Type:</strong> ${site.facilityType}<br>
-                        <a href="${site.website}" target="_blank" rel="noopener">Website</a><br>
-                        <em>Last checked: ${site.dateLastChecked}</em>
-                    `);
-                    bounds.push([site.lat, site.lng]);
-                });
-                if (bounds.length > 0) {
-                    map.fitBounds(bounds, { padding: [50, 50] });
-                }
-            })
-            .catch(err => console.error("Error loading site data:", err));
-    </script>
-</body>
-</html>
+    // Custom icons
+    const greenIcon = new L.Icon({
+        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -28]
+    });
+
+    const grayIcon = new L.Icon({
+        iconUrl: 'https://maps.google.com/mapfiles/ms/icons/grey-dot.png',
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -28]
+    });
+
+    fetch('sites.json')
+        .then(response => response.json())
+        .then(sites => {
+            sites.forEach(site => {
+                // Decide icon based on verification status
+                const isVerified = site.processVerified === true;
+                const marker = L.marker([site.lat, site.lng], { 
+                    icon: isVerified ? greenIcon : grayIcon 
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <b>${site.location}</b><br>
+                    ${site.address}<br>
+                    <strong>Facility Type:</strong> ${site.facilityType}<br>
+                    <strong>Status:</strong> ${isVerified ? "Verified" : "Process Not Verified"}<br>
+                    <a href="${site.website}" target="_blank" rel="noopener">Website</a><br>
+                    <em>Last checked: ${site.dateLastChecked}</em>
+                `);
+
+                bounds.push([site.lat, site.lng]);
+            });
+
+            if (bounds.length > 0) {
+                map.fitBounds(bounds, { padding: [50, 50] });
+            }
+        })
+        .catch(err => console.error("Error loading site data:", err));
+
+    // Add legend
+    const legend = L.control({ position: "bottomright" });
+    legend.onAdd = function () {
+        const div = L.DomUtil.create("div", "legend");
+        div.innerHTML = `
+            <h4>Legend</h4>
+            <p><img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png"> Verified</p>
+            <p><img src="https://maps.google.com/mapfiles/ms/icons/grey-dot.png"> Process Not Verified</p>
+        `;
+        return div;
+    };
+    legend.addTo(map);
+</script>
+
