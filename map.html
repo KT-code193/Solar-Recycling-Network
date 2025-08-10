@@ -24,6 +24,22 @@
           vertical-align: middle;
           margin-right: 6px;
       }
+      /* Info text below map */
+      #verification-info {
+          max-width: 900px;
+          margin: 15px auto 40px auto;
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+          text-align: center;
+          color: #555;
+      }
+      #verification-info a {
+          color: #2980b9;
+          text-decoration: none;
+      }
+      #verification-info a:hover {
+          text-decoration: underline;
+      }
     </style>
 </head>
 <body>
@@ -33,6 +49,10 @@
     </header>
     <main>
         <div id="map" style="height: 500px;"></div>
+        <div id="verification-info">
+          To suggest corrections or provide additional information for verification, please send them to 
+          <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
+        </div>
     </main>
 <script>
     const map = L.map('map');
