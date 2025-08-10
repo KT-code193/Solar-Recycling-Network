@@ -4,8 +4,27 @@
     <meta charset="UTF-8" />
     <title>Interactive Map of Solar Recycling Sites</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      /* Legend styling */
+      .legend {
+          background: white;
+          padding: 10px;
+          line-height: 1.5em;
+          border-radius: 5px;
+          box-shadow: 0 0 15px rgba(0,0,0,0.2);
+          font-family: Arial, sans-serif;
+          font-size: 14px;
+      }
+      .legend img {
+          vertical-align: middle;
+          margin-right: 6px;
+      }
+    </style>
 </head>
 <body>
     <header>
@@ -23,29 +42,38 @@
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Custom icons
+    // Leaflet shadow icon URL
+    const shadowUrl = 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png';
+
+    // Custom green icon for verified sites
     const greenIcon = new L.Icon({
         iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+        shadowUrl: shadowUrl,
         iconSize: [32, 32],
+        shadowSize: [41, 41],
         iconAnchor: [16, 32],
-        popupAnchor: [0, -28]
+        shadowAnchor: [12, 41],
+        popupAnchor: [0, -32]
     });
 
+    // Custom gray icon for unverified sites
     const grayIcon = new L.Icon({
         iconUrl: 'https://maps.google.com/mapfiles/ms/icons/grey-dot.png',
+        shadowUrl: shadowUrl,
         iconSize: [32, 32],
+        shadowSize: [41, 41],
         iconAnchor: [16, 32],
-        popupAnchor: [0, -28]
+        shadowAnchor: [12, 41],
+        popupAnchor: [0, -32]
     });
 
     fetch('sites.json')
         .then(response => response.json())
         .then(sites => {
             sites.forEach(site => {
-                // Decide icon based on verification status
                 const isVerified = site.processVerified === true;
-                const marker = L.marker([site.lat, site.lng], { 
-                    icon: isVerified ? greenIcon : grayIcon 
+                const marker = L.marker([site.lat, site.lng], {
+                    icon: isVerified ? greenIcon : grayIcon
                 }).addTo(map);
 
                 marker.bindPopup(`
@@ -72,11 +100,12 @@
         const div = L.DomUtil.create("div", "legend");
         div.innerHTML = `
             <h4>Legend</h4>
-            <p><img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png"> Verified</p>
-            <p><img src="https://maps.google.com/mapfiles/ms/icons/grey-dot.png"> Process Not Verified</p>
+            <p><img src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" alt="Green icon"> Verified</p>
+            <p><img src="https://maps.google.com/mapfiles/ms/icons/grey-dot.png" alt="Gray icon"> Process Not Verified</p>
         `;
         return div;
     };
     legend.addTo(map);
 </script>
-
+</body>
+</html>
