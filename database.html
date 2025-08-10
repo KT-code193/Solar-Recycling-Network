@@ -11,7 +11,13 @@
         <nav><a href="index.html">Home</a></nav>
     </header>
     <main>
-        <input type="text" id="searchBar" placeholder="Search by name, location, or facility type..." onkeyup="searchSites()" />
+        <input
+          type="text"
+          id="searchBar"
+          placeholder="Search by name, location, facility type, or status..."
+          onkeyup="searchSites()"
+          autocomplete="off"
+        />
         <ul id="siteList"></ul>
     </main>
     <script>
@@ -24,37 +30,40 @@
                 displaySites(sites);
             })
             .catch(err => console.error("Error loading site data:", err));
+
         function displaySites(sitesToDisplay) {
             const siteList = document.getElementById('siteList');
             siteList.innerHTML = '';
 
             if (sitesToDisplay.length === 0) {
                 siteList.innerHTML = '<li>No results found.</li>';
-            return;
+                return;
             }
 
             sitesToDisplay.forEach(site => {
-                const status = site.processVerified ? "Verified" : "Process Not Verified";
-                const statusColor = site.processVerified ? "green" : "gray";
-
+                const statusText = site.processVerified ? "Verified" : "Process Not Verified";
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <b>${site.location}</b> — ${site.facilityType} <span style="color:${statusColor}; font-weight:bold;">●</span><br>
-                    Status: <strong>${status}</strong><br>
+                    <b>${site.location}</b> — ${site.facilityType} — <em>${statusText}</em><br>
                     ${site.address}<br>
                     Website: <a href="${site.website}" target="_blank" rel="noopener">${site.website}</a><br>
                     Last checked: <em>${site.dateLastChecked}</em>
-        `        ;
+                `;
                 siteList.appendChild(li);
             });
-    }
+        }
+
         function searchSites() {
             const query = document.getElementById('searchBar').value.toLowerCase();
-            const filteredSites = sites.filter(site =>
-                site.location.toLowerCase().includes(query) ||
-                site.facilityType.toLowerCase().includes(query) ||
-                site.address.toLowerCase().includes(query)
-            );
+            const filteredSites = sites.filter(site => {
+                const statusText = site.processVerified ? "verified" : "process not verified";
+                return (
+                    site.location.toLowerCase().includes(query) ||
+                    site.facilityType.toLowerCase().includes(query) ||
+                    site.address.toLowerCase().includes(query) ||
+                    statusText.includes(query)
+                );
+            });
             displaySites(filteredSites);
         }
     </script>
