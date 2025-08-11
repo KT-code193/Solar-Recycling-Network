@@ -4,21 +4,95 @@
     <meta charset="UTF-8" />
     <title>Database of Solar Recycling Sites</title>
     <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Style the search input */
+      #searchBar {
+          width: 100%;
+          max-width: 900px;
+          padding: 12px 16px;
+          margin: 20px auto 30px auto;
+          display: block;
+          border: 1.5px solid #ccc;
+          border-radius: 8px;
+          font-size: 1rem;
+          box-sizing: border-box;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+          font-family: 'Roboto', Arial, sans-serif;
+      }
+      #searchBar:focus {
+          border-color: #2980b9;
+          box-shadow: 0 0 8px rgba(41, 128, 185, 0.4);
+          outline: none;
+      }
+
+      /* Style the site list container */
+      #siteList {
+          max-width: 900px;
+          margin: 0 auto 40px auto;
+          padding-left: 0;
+          list-style: none;
+          font-family: 'Roboto', Arial, sans-serif;
+          color: #333;
+      }
+
+      #siteList li {
+          padding: 15px 20px;
+          border-bottom: 1px solid #e1e4e8;
+          transition: background-color 0.3s ease;
+          font-size: 1rem;
+          line-height: 1.4;
+          cursor: default;
+      }
+
+      #siteList li:hover {
+          background-color: #f0f5fa;
+      }
+
+      #siteList li b {
+          font-size: 1.15em;
+          color: #222;
+      }
+
+      #siteList li em {
+          color: #666;
+          font-style: italic;
+      }
+
+      #siteList li a {
+          color: #2980b9;
+          text-decoration: none;
+          word-break: break-word;
+      }
+
+      #siteList li a:hover,
+      #siteList li a:focus {
+          text-decoration: underline;
+      }
+
+      /* No results message styling */
+      #siteList li.no-results {
+          text-align: center;
+          color: #999;
+          font-style: italic;
+          cursor: default;
+      }
+    </style>
 </head>
 <body>
     <header>
         <h1>Database of Solar Recycling Sites</h1>
         <nav><a href="index.html">Home</a></nav>
     </header>
-    <main>
+    <main role="main">
         <input
           type="text"
           id="searchBar"
           placeholder="Search by name, location, facility type, or status..."
           onkeyup="searchSites()"
           autocomplete="off"
+          aria-label="Search solar recycling sites"
         />
-        <ul id="siteList"></ul>
+        <ul id="siteList" aria-live="polite" aria-relevant="all"></ul>
     </main>
     <script>
         let sites = [];
@@ -36,7 +110,7 @@
             siteList.innerHTML = '';
 
             if (sitesToDisplay.length === 0) {
-                siteList.innerHTML = '<li>No results found.</li>';
+                siteList.innerHTML = '<li class="no-results">No results found.</li>';
                 return;
             }
 
@@ -46,7 +120,7 @@
                 li.innerHTML = `
                     <b>${site.location}</b> — ${site.facilityType} — <em>${statusText}</em><br>
                     ${site.address}<br>
-                    Website: <a href="${site.website}" target="_blank" rel="noopener">${site.website}</a><br>
+                    Website: <a href="${site.website}" target="_blank" rel="noopener noreferrer">${site.website}</a><br>
                     Last checked: <em>${site.dateLastChecked}</em>
                 `;
                 siteList.appendChild(li);
