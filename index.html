@@ -1,106 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Solar Recycling Tool</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Roboto', Arial, sans-serif;
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 0 20px;
-      color: #333;
-      background: #f9fafb;
-    }
-
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    header h1 {
-      font-weight: 700;
-      margin-bottom: 8px;
-      font-size: 2.5rem;
-      color: #2980b9;
-    }
-
-    header p {
-      font-weight: 400;
-      font-size: 1.2rem;
-      color: #555;
-    }
-
-    main .intro {
-      margin-bottom: 30px;
-    }
-
-    main .intro h2 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-      color: #222;
-    }
-
-    main .intro p {
-      font-size: 1rem;
-      color: #444;
-    }
-
-    nav.tool-links ul {
-      list-style: none;
-      padding-left: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-    }
-
-    nav.tool-links li {
-      background: white;
-      border-radius: 10px;
-      padding: 20px 30px;
-      box-shadow: 0 4px 10px rgba(41, 128, 185, 0.1);
-      flex: 1 1 250px;
-      max-width: 280px;
-      text-align: center;
-      transition: box-shadow 0.3s ease;
-    }
-
-    nav.tool-links li:hover {
-      box-shadow: 0 6px 18px rgba(41, 128, 185, 0.25);
-    }
-
-    nav.tool-links a {
-      font-size: 1.5rem;
-      color: #2980b9;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-
-    nav.tool-links a:hover,
-    nav.tool-links a:focus {
-      text-decoration: underline;
-      color: #1c5980;
-    }
-
-    nav.tool-links p {
-      font-size: 1rem;
-      color: #555;
-      margin: 0;
-    }
-
-    @media (max-width: 600px) {
-      nav.tool-links ul {
-        flex-direction: column;
-        gap: 20px;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -114,7 +18,7 @@
       <p>Use the tools below to find recyclers, explore data, and share feedback.</p>
     </section>
 
-    <nav class="tool-links" aria-label="Solar recycling navigation links">
+    <nav class="tool-links">
       <ul>
         <li>
           <a href="map.html">🗺️ Interactive Map</a>
@@ -125,11 +29,14 @@
           <p>Search a list of verified recycling sites.</p>
         </li>
         <li>
-          <a href="https://forms.gle/YxSFTuwLu7vFJTZh6" target="_blank" rel="noopener noreferrer">💬 Submit Feedback</a>
+          <a href="https://forms.gle/YxSFTuwLu7vFJTZh6" target="_blank">💬 Submit Feedback</a>
           <p>Tell us how we can improve this tool.</p>
         </li>
       </ul>
     </nav>
   </main>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
