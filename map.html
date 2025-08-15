@@ -52,11 +52,32 @@
 
     .legend p div {
       width: 20px;
-      height: 28px;
-      margin-right: 10px;
-      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      height: 30px;
+      border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+      position: relative;
       box-shadow: 0 3px 6px rgba(0,0,0,0.3);
       border: 2px solid #fff;
+      margin-right: 10px;
+    }
+
+    .legend p div.verified {
+      background: linear-gradient(135deg, #28a745 0%, #1e7b34 100%);
+    }
+
+    .legend p div.not-verified {
+      background: linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%);
+    }
+
+    .legend p div::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: inherit; /* same as pin color */
     }
 
     /* Info below map */
@@ -79,14 +100,13 @@
       text-decoration: underline;
     }
 
-    /* Custom marker hover effect */
+    /* Marker hover effect */
     .custom-marker div:hover {
       transform: scale(1.2);
       transition: transform 0.2s;
       cursor: pointer;
     }
 
-    /* Responsive adjustments */
     @media (max-width: 600px) {
       #map {
         height: 400px;
@@ -118,26 +138,19 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Function to create custom div icons (3D-like pins)
-    function createCustomIcon(color) {
+    // Function to create proper pin-shaped markers
+    function createPin(color) {
       return L.divIcon({
         className: 'custom-marker',
-        html: `<div style="
-          width: 24px; 
-          height: 36px; 
-          background: ${color}; 
-          border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-          box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-          border: 2px solid #fff;
-        "></div>`,
-        iconSize: [24, 36],
-        iconAnchor: [12, 36],
-        popupAnchor: [0, -32]
+        html: `<div style="background: ${color};"></div>`,
+        iconSize: [20, 40],
+        iconAnchor: [10, 40],
+        popupAnchor: [0, -35]
       });
     }
 
-    const greenIcon = createCustomIcon('#28a745'); // Verified
-    const grayIcon = createCustomIcon('#6c757d');  // Not verified
+    const greenIcon = createPin('linear-gradient(135deg, #28a745 0%, #1e7b34 100%)');
+    const grayIcon = createPin('linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%)');
 
     // Fetch sites.json
     fetch('sites.json')
@@ -174,8 +187,8 @@
       const div = L.DomUtil.create("div", "legend");
       div.innerHTML = `
         <h4>Legend</h4>
-        <p><div style="background:#28a745;"></div> Verified</p>
-        <p><div style="background:#6c757d;"></div> Process Not Verified</p>
+        <p><div class="verified"></div> Verified</p>
+        <p><div class="not-verified"></div> Process Not Verified</p>
       `;
       return div;
     };
