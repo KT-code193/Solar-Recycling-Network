@@ -4,25 +4,68 @@
   <meta charset="UTF-8">
   <title>Interactive Map of Solar Recycling Sites</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Main CSS -->
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-</head>
-<body>
-  <header>
-    <h1>Interactive Map of Solar Recycling Sites</h1>
-    <nav><a href="index.html">← Back to Home</a></nav>
-  </header>
 
-  <main>
-    <div id="map" aria-label="Map showing locations of solar recycling sites"></div>
-    <div id="verification-info">
-      To suggest corrections or provide additional information, email 
-      <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
-    </div>
-  </main>
+  <style>
+    /* Map container */
+    #map {
+      width: 100%;
+      height: 550px;
+      max-width: 1000px;
+      margin: 40px auto;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
 
-  <script src="map.js"></script>
-  <script defer src="/_vercel/insights/script.js"></script>
-</body>
-</html>
+    /* Floating legend */
+    .legend {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.6;
+      min-width: 180px;
+    }
+
+    .legend h4 {
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #0077cc;
+      font-weight: 600;
+    }
+
+    .legend p {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .legend p img {
+      width: 20px;
+      height: 28px;
+      margin-right: 10px;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    /* Info below map */
+    #verification-info {
+      max-width: 900px;
+      margin: 20px auto 60px auto;
+      font-size: 14px;
+      text-align: center;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    #verification-info a {
