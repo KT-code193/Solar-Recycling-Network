@@ -3,13 +3,119 @@
 <head>
     <meta charset="UTF-8" />
     <title>Database of Solar Recycling Sites</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" />
+    <style>
+        /* Header styling */
+        header {
+            background: linear-gradient(90deg, #00aaff, #00ffaa);
+            color: #fff;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        header nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        header nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main content */
+        main {
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+            padding: 0 15px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        /* Search bar */
+        #searchBar {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            border: 1.5px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        #searchBar:focus {
+            outline: none;
+            border-color: #00aaff;
+            box-shadow: 0 4px 12px rgba(0,170,255,0.3);
+        }
+
+        /* Site list */
+        #siteList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #siteList li {
+            background: #fff;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #siteList li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        #siteList li b {
+            color: #0077cc;
+            font-size: 1.1rem;
+        }
+
+        #siteList li em {
+            color: #555;
+            font-style: italic;
+        }
+
+        #siteList li a {
+            color: #00aaff;
+            text-decoration: none;
+        }
+
+        #siteList li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            #searchBar {
+                font-size: 0.95rem;
+                padding: 10px 12px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>Database of Solar Recycling Sites</h1>
-        <nav><a href="index.html">Home</a></nav>
+        <nav><a href="index.html">← Back to Home</a></nav>
     </header>
+
     <main>
         <input
           type="text"
@@ -20,6 +126,7 @@
         />
         <ul id="siteList"></ul>
     </main>
+
     <script>
         let sites = [];
 
@@ -53,22 +160,4 @@
             });
         }
 
-        function searchSites() {
-            const query = document.getElementById('searchBar').value.toLowerCase();
-            const filteredSites = sites.filter(site => {
-                const statusText = site.processVerified ? "verified" : "process not verified";
-                return (
-                    site.location.toLowerCase().includes(query) ||
-                    site.facilityType.toLowerCase().includes(query) ||
-                    site.address.toLowerCase().includes(query) ||
-                    statusText.includes(query)
-                );
-            });
-            displaySites(filteredSites);
-        }
-    </script>
-
-    <!-- Vercel Analytics -->
-    <script defer src="/_vercel/insights/script.js"></script>
-</body>
-</html>
+        func
