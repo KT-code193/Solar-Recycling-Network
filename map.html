@@ -10,6 +10,9 @@
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <style>
+  body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+  header { text-align: center; margin-top: 20px; }
+  header nav a { text-decoration: none; color: #0077cc; font-weight: 500; }
   #map {
     width: 100%;
     height: 550px;
@@ -19,53 +22,25 @@
     border: 1px solid #ddd;
     box-shadow: 0 6px 20px rgba(0,0,0,0.08);
   }
-
   .legend {
     background: rgba(255,255,255,0.95);
-    padding: 15px 20px;
+    padding: 12px 16px;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 14px;
     color: #333;
-    line-height: 1.6;
-    min-width: 180px;
   }
-  .legend h4 { margin-bottom: 10px; font-size: 15px; color: #0077cc; font-weight: 600; }
-  .legend p { display: flex; align-items: center; margin-bottom: 8px; }
-  .legend p div {
-    width: 20px; height: 30px;
-    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-    position: relative;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-    border: 2px solid #fff;
-    margin-right: 10px;
-  }
-  .legend p div.verified { background: linear-gradient(135deg, #28a745 0%, #1e7b34 100%); }
-  .legend p div.not-verified { background: linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%); }
-  .legend p div::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0; height: 0;
-    border: 10px solid transparent;
-    border-top-color: inherit;
-  }
-
+  .legend h4 { margin-bottom: 10px; font-size: 15px; color: #0077cc; }
+  .legend img { width: 25px; height: 41px; vertical-align: middle; margin-right: 8px; }
   #verification-info {
     max-width: 900px;
     margin: 20px auto 60px auto;
     font-size: 14px;
     text-align: center;
     color: #555;
-    line-height: 1.5;
   }
   #verification-info a { color: #0077cc; text-decoration: none; font-weight: 500; }
   #verification-info a:hover { text-decoration: underline; }
-
-  .custom-marker div:hover { transform: scale(1.2); transition: transform 0.2s; cursor: pointer; }
   @media (max-width:600px){#map{height:400px;}}
 </style>
 </head>
@@ -84,30 +59,37 @@
 </main>
 
 <script>
-  const map = L.map('map').setView([37.5, -95], 4); // default US view
+  const map = L.map('map').setView([37.5, -95], 4); // default US center
   const bounds = [];
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
   }).addTo(map);
 
-  function createPin(color) {
-    return L.divIcon({
-      className: 'custom-marker',
-      html: `<div style="background: ${color};"></div>`,
-      iconSize: [20,40],
-      iconAnchor: [10,40],
-      popupAnchor: [0,-35]
-    });
-  }
+  // Standard Leaflet icons
+  const greenIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+    iconSize: [25,41],
+    iconAnchor: [12,41],
+    popupAnchor: [1,-34],
+    shadowSize: [41,41]
+  });
 
-  const greenIcon = createPin('linear-gradient(135deg, #28a745 0%, #1e7b34 100%)');
-  const grayIcon  = createPin('linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%)');
+  const grayIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+    shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+    iconSize: [25,41],
+    iconAnchor: [12,41],
+    popupAnchor: [1,-34],
+    shadowSize: [41,41]
+  });
 
+  // Load JSON
   fetch('sites.json')
-    .then(r=>r.json())
-    .then(sites=>{
-      sites.forEach(site=>{
+    .then(response => response.json())
+    .then(sites => {
+      sites.forEach(site => {
         const marker = L.marker([site.lat, site.lng], {
           icon: site.processVerified ? greenIcon : grayIcon
         }).addTo(map);
@@ -124,18 +106,20 @@
         bounds.push([site.lat, site.lng]);
       });
 
-      if(bounds.length>0){map.fitBounds(bounds,{padding:[50,50]});}
+      if(bounds.length>0){
+        map.fitBounds(bounds, { padding: [50,50] });
+      }
     })
-    .catch(err=>console.error("Error loading site data:", err));
+    .catch(err => console.error("Error loading site data:", err));
 
   // Legend
   const legend = L.control({position:"bottomright"});
-  legend.onAdd=function(){
+  legend.onAdd = function(){
     const div = L.DomUtil.create("div","legend");
-    div.innerHTML=`
+    div.innerHTML = `
       <h4>Legend</h4>
-      <p><div class="verified"></div> Verified</p>
-      <p><div class="not-verified"></div> Process Not Verified</p>
+      <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="green"> Verified</p>
+      <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png" alt="gray"> Process Not Verified</p>
     `;
     return div;
   };
