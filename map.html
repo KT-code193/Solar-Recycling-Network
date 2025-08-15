@@ -1,201 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Interactive Map of Solar Recycling Sites</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Interactive Map of Solar Recycling Sites</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Main CSS -->
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Leaflet CSS & JS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<style>
+  #map {
+    width: 100%;
+    height: 550px;
+    max-width: 1000px;
+    margin: 40px auto;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
 
-  <style>
-    /* Map container */
-    #map {
-      width: 100%;
-      height: 550px;
-      max-width: 1000px;
-      margin: 40px auto;
-      border-radius: 12px;
-      border: 1px solid #ddd;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
+  .legend {
+    background: rgba(255,255,255,0.95);
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+    min-width: 180px;
+  }
+  .legend h4 { margin-bottom: 10px; font-size: 15px; color: #0077cc; font-weight: 600; }
+  .legend p { display: flex; align-items: center; margin-bottom: 8px; }
+  .legend p div {
+    width: 20px; height: 30px;
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    position: relative;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    border: 2px solid #fff;
+    margin-right: 10px;
+  }
+  .legend p div.verified { background: linear-gradient(135deg, #28a745 0%, #1e7b34 100%); }
+  .legend p div.not-verified { background: linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%); }
+  .legend p div::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border: 10px solid transparent;
+    border-top-color: inherit;
+  }
 
-    /* Floating legend */
-    .legend {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      font-size: 14px;
-      color: #333;
-      line-height: 1.6;
-      min-width: 180px;
-    }
+  #verification-info {
+    max-width: 900px;
+    margin: 20px auto 60px auto;
+    font-size: 14px;
+    text-align: center;
+    color: #555;
+    line-height: 1.5;
+  }
+  #verification-info a { color: #0077cc; text-decoration: none; font-weight: 500; }
+  #verification-info a:hover { text-decoration: underline; }
 
-    .legend h4 {
-      margin-bottom: 10px;
-      font-size: 15px;
-      color: #0077cc;
-      font-weight: 600;
-    }
-
-    .legend p {
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .legend p div {
-      width: 20px;
-      height: 30px;
-      border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
-      position: relative;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-      border: 2px solid #fff;
-      margin-right: 10px;
-    }
-
-    .legend p div.verified {
-      background: linear-gradient(135deg, #28a745 0%, #1e7b34 100%);
-    }
-
-    .legend p div.not-verified {
-      background: linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%);
-    }
-
-    .legend p div::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border: 10px solid transparent;
-      border-top-color: inherit; /* same as pin color */
-    }
-
-    /* Info below map */
-    #verification-info {
-      max-width: 900px;
-      margin: 20px auto 60px auto;
-      font-size: 14px;
-      text-align: center;
-      color: #555;
-      line-height: 1.5;
-    }
-
-    #verification-info a {
-      color: #0077cc;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    #verification-info a:hover {
-      text-decoration: underline;
-    }
-
-    /* Marker hover effect */
-    .custom-marker div:hover {
-      transform: scale(1.2);
-      transition: transform 0.2s;
-      cursor: pointer;
-    }
-
-    @media (max-width: 600px) {
-      #map {
-        height: 400px;
-      }
-    }
-  </style>
+  .custom-marker div:hover { transform: scale(1.2); transition: transform 0.2s; cursor: pointer; }
+  @media (max-width:600px){#map{height:400px;}}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Interactive Map of Solar Recycling Sites</h1>
-    <nav><a href="index.html">← Back to Home</a></nav>
-  </header>
+<header>
+<h1>Interactive Map of Solar Recycling Sites</h1>
+<nav><a href="index.html">← Back to Home</a></nav>
+</header>
 
-  <main>
-    <div id="map" aria-label="Map showing locations of solar recycling sites"></div>
-    <div id="verification-info">
-      To suggest corrections or provide additional information, email 
-      <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
-    </div>
-  </main>
+<main>
+  <div id="map" aria-label="Map showing solar recycling sites"></div>
+  <div id="verification-info">
+    To suggest corrections or provide additional information, email 
+    <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
+  </div>
+</main>
 
-  <script>
-    // Initialize map
-    const map = L.map('map');
-    const bounds = [];
+<script>
+  const map = L.map('map').setView([37.5, -95], 4); // default US view
+  const bounds = [];
 
-    // Tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
 
-    // Function to create proper pin-shaped markers
-    function createPin(color) {
-      return L.divIcon({
-        className: 'custom-marker',
-        html: `<div style="background: ${color};"></div>`,
-        iconSize: [20, 40],
-        iconAnchor: [10, 40],
-        popupAnchor: [0, -35]
+  function createPin(color) {
+    return L.divIcon({
+      className: 'custom-marker',
+      html: `<div style="background: ${color};"></div>`,
+      iconSize: [20,40],
+      iconAnchor: [10,40],
+      popupAnchor: [0,-35]
+    });
+  }
+
+  const greenIcon = createPin('linear-gradient(135deg, #28a745 0%, #1e7b34 100%)');
+  const grayIcon  = createPin('linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%)');
+
+  fetch('sites.json')
+    .then(r=>r.json())
+    .then(sites=>{
+      sites.forEach(site=>{
+        const marker = L.marker([site.lat, site.lng], {
+          icon: site.processVerified ? greenIcon : grayIcon
+        }).addTo(map);
+
+        marker.bindPopup(`
+          <b>${site.location}</b><br>
+          ${site.address}<br>
+          <strong>Facility Type:</strong> ${site.facilityType}<br>
+          <strong>Status:</strong> ${site.processVerified ? "Verified" : "Process Not Verified"}<br>
+          <a href="${site.website}" target="_blank" rel="noopener noreferrer">Website</a><br>
+          <em>Last checked: ${site.dateLastChecked}</em>
+        `);
+
+        bounds.push([site.lat, site.lng]);
       });
-    }
 
-    const greenIcon = createPin('linear-gradient(135deg, #28a745 0%, #1e7b34 100%)');
-    const grayIcon = createPin('linear-gradient(135deg, #6c757d 0%, #4a4a4a 100%)');
+      if(bounds.length>0){map.fitBounds(bounds,{padding:[50,50]});}
+    })
+    .catch(err=>console.error("Error loading site data:", err));
 
-    // Fetch sites.json
-    fetch('sites.json')
-      .then(response => response.json())
-      .then(sites => {
-        sites.forEach(site => {
-          const isVerified = site.processVerified === true;
+  // Legend
+  const legend = L.control({position:"bottomright"});
+  legend.onAdd=function(){
+    const div = L.DomUtil.create("div","legend");
+    div.innerHTML=`
+      <h4>Legend</h4>
+      <p><div class="verified"></div> Verified</p>
+      <p><div class="not-verified"></div> Process Not Verified</p>
+    `;
+    return div;
+  };
+  legend.addTo(map);
+</script>
 
-          const marker = L.marker([site.lat, site.lng], {
-            icon: isVerified ? greenIcon : grayIcon
-          }).addTo(map);
-
-          marker.bindPopup(`
-            <b>${site.location}</b><br>
-            ${site.address}<br>
-            <strong>Facility Type:</strong> ${site.facilityType}<br>
-            <strong>Status:</strong> ${isVerified ? "Verified" : "Process Not Verified"}<br>
-            <a href="${site.website}" target="_blank" rel="noopener noreferrer">Website</a><br>
-            <em>Last checked: ${site.dateLastChecked}</em>
-          `);
-
-          bounds.push([site.lat, site.lng]);
-        });
-
-        if (bounds.length > 0) {
-          map.fitBounds(bounds, { padding: [50, 50] });
-        }
-      })
-      .catch(err => console.error("Error loading site data:", err));
-
-    // Legend
-    const legend = L.control({ position: "bottomright" });
-    legend.onAdd = function () {
-      const div = L.DomUtil.create("div", "legend");
-      div.innerHTML = `
-        <h4>Legend</h4>
-        <p><div class="verified"></div> Verified</p>
-        <p><div class="not-verified"></div> Process Not Verified</p>
-      `;
-      return div;
-    };
-    legend.addTo(map);
-  </script>
-
-  <!-- Vercel Analytics -->
-  <script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
