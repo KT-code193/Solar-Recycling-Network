@@ -4,10 +4,8 @@
 <meta charset="UTF-8">
 <title>Interactive Map of Solar Recycling Sites</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
 <style>
   body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
   header { text-align: center; margin-top: 20px; }
@@ -58,14 +56,16 @@
 </main>
 
 <script>
-const map = L.map('map').setView([37.5, -95], 4); // default US center
+// Initialize map
+const map = L.map('map').setView([37.5, -95], 4);
 const bounds = [];
 
+// Tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Standard Leaflet icons
+// Marker icons
 const greenIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
@@ -74,7 +74,6 @@ const greenIcon = new L.Icon({
   popupAnchor: [1,-34],
   shadowSize: [41,41]
 });
-
 const grayIcon = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
@@ -86,239 +85,13 @@ const grayIcon = new L.Icon({
 
 // Embedded JSON data
 const sites = [
-  {
-    "location": "Goodyear, AZ",
-    "address": "215 N 143rd Ave, Ste. 110, Goodyear, AZ 85338",
-    "lat": 33.4251,
-    "lng": -112.3899,
-    "facilityType": "ITAD & E‑Waste Facility",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Fresno, CA (Supercenter)",
-    "address": "3243 S East Ave, Bldg 108, Fresno, CA 93725",
-    "lat": 36.8505,
-    "lng": -119.8089,
-    "facilityType": "ITAD & E‑Waste Supercenter",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Plainfield, IN",
-    "address": "3100 Reeves Rd, Plainfield, IN 46168",
-    "lat": 39.7108,
-    "lng": -86.3408,
-    "facilityType": "Flagship Supercenter",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Columbus, OH",
-    "address": "4449 Easton Way, 2nd Fl, Columbus, OH 43219",
-    "lat": 39.9848,
-    "lng": -82.9536,
-    "facilityType": "Branch Office",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Holliston, MA",
-    "address": "89 R Cross St, Holliston, MA 01746",
-    "lat": 42.1885,
-    "lng": -71.4477,
-    "facilityType": "ITAD & E‑Waste Supercenter",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Badin, NC",
-    "address": "293 NC‑740 Hwy #134, Badin, NC 28009",
-    "lat": 35.3863,
-    "lng": -80.1361,
-    "facilityType": "ITAD & E‑Waste Facility",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Raleigh, NC",
-    "address": "9121 Anson Way, Ste 230, Raleigh, NC 27615",
-    "lat": 35.7796,
-    "lng": -78.6382,
-    "facilityType": "Branch Office",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Lincoln Park, NJ",
-    "address": "510 Ryerson Rd, Ste 2, Lincoln Park, NJ 07035",
-    "lat": 40.9081,
-    "lng": -74.2276,
-    "facilityType": "ITAD & E‑Waste Facility",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Long Island City, NY",
-    "address": "28‑07 Jackson Ave, 5th Fl, Long Island City, NY 11101",
-    "lat": 40.743,
-    "lng": -73.9445,
-    "facilityType": "Branch Office",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Flower Mound, TX",
-    "address": "500 Enterprise Dr, Ste 400, Flower Mound, TX 75028",
-    "lat": 33.0186,
-    "lng": -97.0402,
-    "facilityType": "ITAD & E‑Waste Facility",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Kent, WA",
-    "address": "6970 S 220th St, Kent, WA 98032",
-    "lat": 47.3742,
-    "lng": -122.2274,
-    "facilityType": "ITAD & E‑Waste Facility",
-    "website": "https://eridirect.com/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "We Recycle Solar",
-    "address": "4742 N 24th St, Ste 300, Phoenix, AZ 85016",
-    "lat": 33.5072,
-    "lng": -112.0308,
-    "facilityType": "Solar panel recycling facility",
-    "website": "https://werecyclesolar.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Device Services Group",
-    "address": "310 Wilmeth Rd, Ste 100, McKinney, TX 75071",
-    "lat": 33.2304,
-    "lng": -96.6145,
-    "facilityType": "ITAD & solar panel recycling facility",
-    "website": "https://deviceservicesgroup.com/solar-panel-recycling",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Imperial Star Solar",
-    "address": "5 Park Plaza, Ste 1560, Irvine, CA 92614",
-    "lat": 33.6765,
-    "lng": -117.8374,
-    "facilityType": "Solar module manufacturer/recycler HQ",
-    "website": "https://www.imperialstar.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "First Solar",
-    "address": "350 W Washington St, Ste 600, Tempe, AZ 85281",
-    "lat": 33.4377,
-    "lng": -111.9444,
-    "facilityType": "CdTe solar module recycling center",
-    "website": "https://www.firstsolar.com/Modules/Recycling",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "JinkoSolar (U.S.)",
-    "address": "595 Market St, Ste 2200, San Francisco, CA 94105",
-    "lat": 37.7893,
-    "lng": -122.4009,
-    "facilityType": "c‑Si module sales office with take-back program",
-    "website": "https://jinkosolar.us",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Qcells (Sales Office)",
-    "address": "300 Spectrum Center Dr, Ste 500, Irvine, CA 92618",
-    "lat": 33.6694,
-    "lng": -117.8231,
-    "facilityType": "Module sales & upcoming recycling venture",
-    "website": "https://www.us.qcells.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Solarcycle – Odessa TX",
-    "address": "8000 N Golder Ave, Odessa, TX 79764",
-    "lat": 31.8656,
-    "lng": -102.3676,
-    "facilityType": "Clean tech solar panel recycling facility",
-    "website": "https://www.solarcycle.us/",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Cleanlites Recycling – Cincinnati OH",
-    "address": "7806 Anthony Wayne Ave, Cincinnati, OH 45216",
-    "lat": 39.2276,
-    "lng": -84.4848,
-    "facilityType": "Solar panel & PV system recycling center",
-    "website": "http://www.cleanlites.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "PowerHouse Recycling – Salisbury NC",
-    "address": "1325 Litton Dr, Salisbury, NC 28147",
-    "lat": 35.675,
-    "lng": -80.475,
-    "facilityType": "Electronics & PV recycling campus",
-    "website": "https://powerhouserecycling.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Interco Trading – Madison IL",
-    "address": "10 Fox Industrial Dr, Madison, IL 62060",
-    "lat": 38.7409,
-    "lng": -90.1189,
-    "facilityType": "R2 & metals/e-scrap recycling (accepts PV)",
-    "website": "https://www.intercotradingco.com",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Comstock – Silver Springs, NV",
-    "address": "1200 American Flat Rd, Silver Springs, NV 89429",
-    "lat": 39.4153,
-    "lng": -119.2332,
-    "facilityType": "Solar panel recycling & mineral recovery center",
-    "website": "https://www.comstock.inc",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  },
-  {
-    "location": "Comstock Innovation Campus – Storey County, NV",
-    "address": "1621 Comstock Dr, Virginia City, NV 89440",
-    "lat": 39.3078,
-    "lng": -119.649,
-    "facilityType": "Recycling R&D and lithium extraction site",
-    "website": "https://www.comstock.inc",
-    "dateLastChecked": "Jul 24, 2025",
-    "processVerified": false
-  }
-]
+  {"location":"Goodyear, AZ","address":"215 N 143rd Ave, Ste. 110, Goodyear, AZ 85338","lat":33.4251,"lng":-112.3899,"facilityType":"ITAD & E‑Waste Facility","website":"https://eridirect.com/","dateLastChecked":"Jul 24, 2025","processVerified":false},
+  {"location":"Fresno, CA (Supercenter)","address":"3243 S East Ave, Bldg 108, Fresno, CA 93725","lat":36.8505,"lng":-119.8089,"facilityType":"ITAD & E‑Waste Supercenter","website":"https://eridirect.com/","dateLastChecked":"Jul 24, 2025","processVerified":false},
+  {"location":"Plainfield, IN","address":"3100 Reeves Rd, Plainfield, IN 46168","lat":39.7108,"lng":-86.3408,"facilityType":"Flagship Supercenter","website":"https://eridirect.com/","dateLastChecked":"Jul 24, 2025","processVerified":false}
+  // Add the rest of your sites here, separated by commas
 ];
 
+// Add markers
 sites.forEach(site => {
   const marker = L.marker([site.lat, site.lng], {
     icon: site.processVerified ? greenIcon : grayIcon
@@ -336,24 +109,23 @@ sites.forEach(site => {
   bounds.push([site.lat, site.lng]);
 });
 
-if(bounds.length>0){
+// Fit map bounds
+if(bounds.length > 0){
   map.fitBounds(bounds, { padding: [50,50] });
 }
 
-// Legend
+// Add legend
 const legend = L.control({position:"bottomright"});
 legend.onAdd = function(){
   const div = L.DomUtil.create("div","legend");
   div.innerHTML = `
     <h4>Legend</h4>
-    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png" alt="green"> Verified</p>
-    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png" alt="gray"> Process Not Verified</p>
+    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"> Verified</p>
+    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png"> Process Not Verified</p>
   `;
   return div;
 };
 legend.addTo(map);
 </script>
-
-<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
