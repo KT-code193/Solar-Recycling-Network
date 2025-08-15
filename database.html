@@ -160,4 +160,22 @@
             });
         }
 
-        func
+        function searchSites() {
+            const query = document.getElementById('searchBar').value.toLowerCase();
+            const filteredSites = sites.filter(site => {
+                const statusText = site.processVerified ? "verified" : "process not verified";
+                return (
+                    site.location.toLowerCase().includes(query) ||
+                    site.facilityType.toLowerCase().includes(query) ||
+                    site.address.toLowerCase().includes(query) ||
+                    statusText.includes(query)
+                );
+            });
+            displaySites(filteredSites);
+        }
+    </script>
+
+    <!-- Vercel Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
