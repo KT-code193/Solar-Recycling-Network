@@ -69,3 +69,106 @@
     }
 
     #verification-info a {
+      color: #0077cc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    #verification-info a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      #map {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Interactive Map of Solar Recycling Sites</h1>
+    <nav><a href="index.html">← Back to Home</a></nav>
+  </header>
+
+  <main>
+    <div id="map" aria-label="Map showing locations of solar recycling sites"></div>
+    <div id="verification-info">
+      To suggest corrections or provide additional information, email 
+      <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
+    </div>
+  </main>
+
+  <script>
+    // Initialize map
+    const map = L.map('map');
+    const bounds = [];
+
+    // Tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Modern icons
+    const greenIcon = new L.Icon({
+      iconUrl: 'https://img.icons8.com/ios-filled/50/28a745/marker.png',
+      iconSize: [25, 40],
+      iconAnchor: [12, 40],
+      popupAnchor: [0, -35]
+    });
+
+    const grayIcon = new L.Icon({
+      iconUrl: 'https://img.icons8.com/ios-filled/50/6c757d/marker.png',
+      iconSize: [25, 40],
+      iconAnchor: [12, 40],
+      popupAnchor: [0, -35]
+    });
+
+    // Fetch sites.json (same as database)
+    fetch('sites.json')
+      .then(response => response.json())
+      .then(sites => {
+        sites.forEach(site => {
+          const isVerified = site.processVerified === true;
+
+          const marker = L.marker([site.lat, site.lng], {
+            icon: isVerified ? greenIcon : grayIcon
+          }).addTo(map);
+
+          marker.bindPopup(`
+            <b>${site.location}</b><br>
+            ${site.address}<br>
+            <strong>Facility Type:</strong> ${site.facilityType}<br>
+            <strong>Status:</strong> ${isVerified ? "Verified" : "Process Not Verified"}<br>
+            <a href="${site.website}" target="_blank" rel="noopener noreferrer">Website</a><br>
+            <em>Last checked: ${site.dateLastChecked}</em>
+          `);
+
+          bounds.push([site.lat, site.lng]);
+        });
+
+        if (bounds.length > 0) {
+          map.fitBounds(bounds, { padding: [50, 50] });
+        }
+      })
+      .catch(err => console.error("Error loading site data:", err));
+
+    // Legend
+    const legend = L.control({ position: "bottomright" });
+    legend.onAdd = function () {
+      const div = L.DomUtil.create("div", "legend");
+      div.innerHTML = `
+        <h4>Legend</h4>
+        <p><img src="https://img.icons8.com/ios-filled/50/28a745/marker.png" alt="Verified icon"> Verified</p>
+        <p><img src="https://img.icons8.com/ios-filled/50/6c757d/marker.png" alt="Not verified icon"> Process Not Verified</p>
+      `;
+      return div;
+    };
+    legend.addTo(map);
+  </script>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
