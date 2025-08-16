@@ -1,169 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Solar Recycling Sites Map</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-  <!-- Modern Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    /* Base */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-      background: #f9fafb;
-      color: #1f2937;
-      line-height: 1.5;
-    }
-
-    header {
-      text-align: center;
-      padding: 2rem 1rem 1rem;
-      background: linear-gradient(135deg, #0ea5e9, #2563eb);
-      color: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      font-weight: 700;
-    }
-
-    header nav {
-      margin-top: 0.75rem;
-    }
-
-    header nav a {
-      text-decoration: none;
-      color: #e0f2fe;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-
-    header nav a:hover {
-      color: #fff;
-    }
-
-    /* Map container */
-    #map {
-      width: 100%;
-      height: 550px;
-      max-width: 1100px;
-      margin: 2rem auto;
-      border-radius: 16px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-
-    /* Legend */
-    .legend {
-      background: rgba(255,255,255,0.95);
-      padding: 1rem 1.2rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-      font-size: 0.9rem;
-      color: #374151;
-    }
-
-    .legend h4 {
-      margin: 0 0 0.5rem;
-      font-size: 1rem;
-      color: #2563eb;
-      font-weight: 600;
-    }
-
-    .legend img {
-      width: 22px;
-      height: 36px;
-      vertical-align: middle;
-      margin-right: 6px;
-    }
-
-    /* Footer info */
-    #verification-info {
-      max-width: 850px;
-      margin: 1.5rem auto 3rem;
-      padding: 1rem 1.5rem;
-      text-align: center;
-      font-size: 0.95rem;
-      color: #4b5563;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-
-    #verification-info a {
-      color: #2563eb;
-      font-weight: 600;
-      text-decoration: none;
-    }
-
-    #verification-info a:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 640px) {
-      #map { height: 420px; }
-      header h1 { font-size: 1.4rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Interactive Map of Solar Recycling Sites</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Interactive Map of Solar Recycling Sites</h1>
-    <nav><a href="index.html">← Back to Home</a></nav>
-  </header>
+<header>
+  <h1>Interactive Map of Solar Recycling Sites</h1>
+  <nav><a href="index.html">← Back to Home</a></nav>
+</header>
 
-  <main>
-    <div id="map" aria-label="Map showing solar recycling sites"></div>
-    <div id="verification-info">
-      To suggest corrections or provide additional information, email 
-      <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
-    </div>
-  </main>
+<main>
+  <div id="map" aria-label="Map showing solar recycling sites"></div>
+  <div id="verification-info">
+    To suggest corrections or provide additional information, email 
+    <a href="mailto:solarrecyclingnetwork@gmail.com">solarrecyclingnetwork@gmail.com</a>.
+  </div>
+</main>
 
-  <script>
-    // Initialize map
-    const map = L.map('map').setView([37.5, -95], 4);
-    const bounds = [];
+<script>
+// Initialize map
+const map = L.map('map').setView([37.5, -95], 4);
+const bounds = [];
 
-    // Tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+// Tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
 
-    // Marker icons
-    const greenIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
-      iconSize: [25,41],
-      iconAnchor: [12,41],
-      popupAnchor: [1,-34],
-      shadowSize: [41,41]
-    });
+// Marker icons
+const greenIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+  iconSize: [25,41],
+  iconAnchor: [12,41],
+  popupAnchor: [1,-34],
+  shadowSize: [41,41]
+});
+const grayIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
+  iconSize: [25,41],
+  iconAnchor: [12,41],
+  popupAnchor: [1,-34],
+  shadowSize: [41,41]
+});
 
-    const grayIcon = new L.Icon({
-      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png',
-      shadowUrl: 'https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png',
-      iconSize: [25,41],
-      iconAnchor: [12,41],
-      popupAnchor: [1,-34],
-      shadowSize: [41,41]
-    });
-
-    // Site data
-    const sites = [...]; // keep your JSON data as-is
-
-    // Add markers
+// Load sites.json dynamically
+fetch('sites.json')
+  .then(response => response.json())
+  .then(sites => {
     sites.forEach(site => {
       const marker = L.marker([site.lat, site.lng], {
         icon: site.processVerified ? greenIcon : grayIcon
@@ -181,23 +71,24 @@
       bounds.push([site.lat, site.lng]);
     });
 
-    // Fit bounds
     if(bounds.length > 0){
       map.fitBounds(bounds, { padding: [50,50] });
     }
+  })
+  .catch(err => console.error('Failed to load sites.json:', err));
 
-    // Add legend
-    const legend = L.control({position:"bottomright"});
-    legend.onAdd = function(){
-      const div = L.DomUtil.create("div","legend");
-      div.innerHTML = `
-        <h4>Legend</h4>
-        <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"> Verified</p>
-        <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png"> Process Not Verified</p>
-      `;
-      return div;
-    };
-    legend.addTo(map);
-  </script>
+// Legend
+const legend = L.control({position:"bottomright"});
+legend.onAdd = function(){
+  const div = L.DomUtil.create("div","legend");
+  div.innerHTML = `
+    <h4>Legend</h4>
+    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png"> Verified</p>
+    <p><img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-grey.png"> Process Not Verified</p>
+  `;
+  return div;
+};
+legend.addTo(map);
+</script>
 </body>
 </html>
