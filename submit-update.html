@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Submit a Solar Recycling Site Update</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Form container */
+  main {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem 1.5rem;
+    font-family: 'Inter', Arial, sans-serif;
+  }
+
+  h1 {
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 1.5rem;
+  }
+
+  form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    color: #222;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .checkbox-group input {
+    margin-right: 0.5rem;
+  }
+
+  button {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  button:hover {
+    background: #1e40af;
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    form {
+      padding: 1.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Submit a Solar Recycling Site Update</h1>
+  <nav><a href="index.html">← Back to Home</a></nav>
+</header>
+
+<main>
+  <form id="siteUpdateForm">
+    <label for="name">Your Name (optional)</label>
+    <input type="text" id="name" name="name">
+
+    <label for="email">Your Email (optional)</label>
+    <input type="email" id="email" name="email">
+
+    <label for="facilityName">Facility Name</label>
+    <input type="text" id="facilityName" name="facilityName" required>
+
+    <label for="address">Street Address</label>
+    <input type="text" id="address" name="address" required>
+
+    <label for="city">City</label>
+    <input type="text" id="city" name="city" required>
+
+    <label for="state">State</label>
+    <select id="state" name="state" required>
+      <option value="">Select State</option>
+      <option value="AL">Alabama</option>
+      <option value="AK">Alaska</option>
+      <!-- add all US states -->
+      <option value="WY">Wyoming</option>
+    </select>
+
+    <label for="zip">ZIP Code</label>
+    <input type="text" id="zip" name="zip" required>
+
+    <label for="website">Website URL (optional)</label>
+    <input type="url" id="website" name="website">
+
+    <label for="facilityType">Facility Type</label>
+    <select id="facilityType" name="facilityType" required>
+      <option value="">Select Type</option>
+      <option value="ITAD & E-Waste Facility">ITAD & E-Waste Facility</option>
+      <option value="Solar Panel Recycling Facility">Solar Panel Recycling Facility</option>
+      <option value="Module Sales / Take-back Program">Module Sales / Take-back Program</option>
+      <option value="Solar Manufacturer / Recycler HQ">Solar Manufacturer / Recycler HQ</option>
+      <option value="Other">Other</option>
+    </select>
+
+    <label for="status">Verification Status</label>
+    <select id="status" name="status" required>
+      <option value="">Select Status</option>
+      <option value="Verified">Verified</option>
+      <option value="Not Verified">Not Verified / Needs Update</option>
+    </select>
+
+    <label for="reason">Reason for Submission</label>
+    <textarea id="reason" name="reason" placeholder="Explain the correction or update..." required></textarea>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="consent" name="consent" required>
+      <label for="consent">I confirm that the information I provide is accurate.</label>
+    </div>
+
+    <button type="submit">Submit Update</button>
+  </form>
+</main>
+
+<script>
+  const form = document.getElementById('siteUpdateForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Thank you! Your submission has been received.');
+    form.reset();
+  });
+</script>
+</body>
+</html>
