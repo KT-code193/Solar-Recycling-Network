@@ -5,16 +5,53 @@
   <title>Solar Recycling Network</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Buttons Section */
+    .tool-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+    }
+
+    .tool-links a {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 999px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: all 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .tool-links a:hover {
+      background: #1e40af;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    @media (max-width: 600px) {
+      .tool-links {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .tool-links a {
+        width: 80%;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Header -->
   <header>
     <h1>Solar Recycling Network</h1>
     <p class="subtitle">Connecting verified solar recycling sites across the U.S.</p>
-    <nav>
-      <a href="#tools">Explore Tools</a>
-      <a href="#contact">Contact</a>
-    </nav>
   </header>
 
   <!-- Main Content -->
@@ -22,25 +59,14 @@
     <!-- Intro Section -->
     <section class="intro">
       <h2>Welcome to the Solar Recycling Network</h2>
-      <p>Use the tools below to explore verified sites, view an interactive map, or submit updates to keep our database current.</p>
+      <p>Use the buttons below to explore verified sites, view an interactive map, or submit updates to keep our database current.</p>
     </section>
 
     <!-- Tool Links / Buttons -->
-    <section class="tool-links" id="tools">
-      <ul>
-        <li class="tool-card">
-          <a href="database.html" target="_blank">View Database of Sites</a>
-          <p>Explore all verified and unverified solar recycling sites across the U.S.</p>
-        </li>
-        <li class="tool-card">
-          <a href="map.html" target="_blank">View Interactive Map</a>
-          <p>See the locations of solar recycling facilities on an interactive map.</p>
-        </li>
-        <li class="tool-card">
-          <a href="https://forms.gle/UxbSGEzPmR1hGJra7" target="_blank">Submit a Site Update</a>
-          <p>Provide new or updated information about a solar recycling site.</p>
-        </li>
-      </ul>
+    <section class="tool-links">
+      <a href="database.html" target="_blank">View Database of Sites</a>
+      <a href="map.html" target="_blank">View Interactive Map</a>
+      <a href="https://forms.gle/UxbSGEzPmR1hGJra7" target="_blank">Submit a Site Update</a>
     </section>
 
     <!-- Callout Section -->
