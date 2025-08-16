@@ -134,3 +134,42 @@ footer {
   margin-top: 3rem;
   border-top: 1px solid #e5e7eb;
 }
+
+/* ===========================
+   Leaflet Popup Card Style
+=========================== */
+.leaflet-popup-content {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.4;
+  max-width: 250px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.leaflet-popup-content b {
+  color: #0077cc;
+  font-size: 1.1rem;
+}
+
+.leaflet-popup-content strong {
+  color: #555;
+}
+
+.leaflet-popup-content a {
+  color: #00aaff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.leaflet-popup-content a:hover {
+  text-decoration: underline;
+}
+
+.leaflet-popup-tip {
+  background: #fff;
+}
+
